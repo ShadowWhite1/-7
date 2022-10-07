@@ -9,37 +9,36 @@ def read_cookbook():
         for line in f:
             dish_name = line.strip()
             count = int(f.readline())
-            ing_list = list()
+            ingredient_list = list()
             for item in range(count):
-                ingrs = {}
-                ingr = f.readline().strip()
-                ingrs['ingredient_name'], ingrs['quantity'], ingrs['measure'] = ingr.split('|')
-                ingrs['quantity'] = int(ingrs['quantity'])
-                ing_list.append(ingrs)
+                ingredients = {}
+                ingredient = f.readline().strip()
+                ingredients['ingredient_name'], ingredients['quantity'], ingredients['measure'] = ingredient.split('|')
+                ingredients['quantity'] = int(ingredients['quantity'])
+                ingredient_list.append(ingredients)
             f.readline()
-            cook_book[dish_name] = ing_list
+            cook_book[dish_name] = ingredient_list
     return cook_book
 
 
 def get_shop_list_by_dishes(dishes, person_count):
-    ingr_list = dict()
+    ingredient_list = dict()
 
     for dish_name in dishes: 
         if dish_name in cook_book:
-            for ings in cook_book[dish_name]:  
-                meas_quan_list = dict()
-                if ings['ingredient_name'] not in ingr_list:
-                    meas_quan_list['measure'] = ings['measure']
-                    meas_quan_list['quantity'] = ings['quantity'] * person_count
-                    ingr_list[ings['ingredient_name']] = meas_quan_list
+            for ingredients in cook_book[dish_name]:  
+                measure_quantity_list = dict()
+                if ingredients['ingredient_name'] not in ingredient_list:
+                    measure_quantity_list['measure'] = ingredients['measure']
+                    measure_quantity_list['quantity'] = ingredients['quantity'] * person_count
+                    ingredient_list[ingredients['ingredient_name']] = measure_quantity_list
                 else:
-                    ingr_list[ings['ingredient_name']]['quantity'] = ingr_list[ings['ingredient_name']]['quantity'] + \
-                                                                     ings['quantity'] * person_count
+                    ingredient_list[ingredients['ingredient_name']]['quantity'] = ingredient_list[ingredients['ingredient_name']]['quantity'] + \
+                                                                     ingredients['quantity'] * person_count
 
         else:
             print(f'\n"Такого блюда нет в списке!"\n')
-    return ingr_list
-
+    return ingredient_list
 
 def rewrite_file(path1=None, path2=None, path3=None):
     if path1 or path2 or path3 is None:
